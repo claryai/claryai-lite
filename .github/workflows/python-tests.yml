@@ -32,6 +32,13 @@ jobs:
       run: |
         pytest --cov=./ --cov-report=xml
 
+    - name: Archive test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: ./coverage.xml
+        retention-days: 5
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
