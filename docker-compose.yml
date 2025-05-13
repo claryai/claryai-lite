@@ -1,0 +1,54 @@
+version: '3'
+services:
+  web:
+    build: ./core/web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    volumes:
+      - ./data:/app/data
+    environment:
+      - API_URL=http://api:8000
+      - NODE_ENV=development
+      - PROJECT_NAME=Clary AI Lite
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./core
+      dockerfile: ../Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - MODEL_PATH=/app/models
+      - DATABASE_URL=postgresql://claryai:claryai@db:5432/claryai
+      - DEBUG=true
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - PROJECT_NAME=Clary AI Lite
+      - API_KEY_SALT=claryai
+      - LICENSE_VALIDATION_ENABLED=true
+      - LICENSE_SERVER_URL=https://api.claryai.com/license
+      - CONTAINER_ID=${CONTAINER_ID:-lite_container}
+      - TIER=lite
+      - LLM_INTEGRATION=false
+    restart: unless-stopped
+
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=claryai
+      - POSTGRES_PASSWORD=claryai
+      - POSTGRES_DB=claryai
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
