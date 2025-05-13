@@ -1,0 +1,56 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install pytest
+    
+    - name: Set up test environment
+      run: |
+        # Create any necessary test configuration files
+        echo "Setting up test environment"
+        # Add any environment setup steps here
+    
+    - name: Run integration tests
+      env:
+        # Add any required environment variables for tests
+        TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
+      run: |
+        # Run only integration tests
+        pytest tests/integration/ -v
+    
+    - name: Generate test report
+      if: always()
+      run: |
+        # Generate a test report if needed
+        echo "Integration test run completed"
+    
+    - name: Upload test artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: integration-test-results
+        path: |
+          # Add paths to any test result files or logs
+          test-results/
+          logs/
