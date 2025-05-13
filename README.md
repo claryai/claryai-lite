@@ -1,79 +1,100 @@
 # Clary AI Lite
 
-Clary AI Lite is a lightweight document processing platform with agentic capabilities, built on open source AI models.
+Clary AI Lite is the entry-level tier of the Clary AI document processing platform, providing basic document processing capabilities without pre-integrated LLM models.
 
 ## Overview
 
-Clary AI Lite provides basic document processing capabilities without pre-integrated LLM models, allowing users to configure their own model connections if needed. It is designed to be self-hosted via Docker containers and offers a commercial API service that clients can connect to.
+Clary AI Lite offers essential document processing functionality, allowing users to extract and analyze text from various document formats. This tier is designed for users who want to use their own LLM models or who have simpler document processing needs.
 
 ## Features
 
-- **Basic Document Extraction**: Extract structured data from documents
-- **API Access**: REST API for document processing
-- **Self-Hosted Deployment**: Deploy on your own infrastructure
-- **Privacy-Focused**: Keep your data on-premises
-- **Bring Your Own LLM**: Configure your own LLM connections
+- Basic document processing
+- Text extraction from multiple document formats
+- Document structure recognition
+- Simple API for integration
+- Self-hosted deployment via Docker
+- Extensible architecture
 
-## Hardware Requirements
+## Tier Comparison
 
-- **CPU**: 2+ cores
-- **RAM**: 4GB minimum, 8GB recommended
-- **Storage**: 5GB for installation, plus storage for documents
-- **GPU**: Not required
+| Feature | Lite | Standard | Professional |
+|---------|------|----------|--------------|
+| Document Processing | ✅ | ✅ | ✅ |
+| Text Extraction | ✅ | ✅ | ✅ |
+| Structure Recognition | ✅ | ✅ | ✅ |
+| Pre-integrated LLM | ❌ | ✅ (Phi-4) | ✅ (Cloud) |
+| Advanced Analytics | ❌ | ✅ | ✅ |
+| Cloud LLM Support | ❌ | ❌ | ✅ |
+| Enterprise Features | ❌ | ❌ | ✅ |
 
-## Getting Started
+## Repository Structure
+
+```
+claryai-lite/
+├── core/                 # Core submodule
+├── src/                  # Lite-specific source code
+│   ├── api/              # API components
+│   ├── models/           # Lite-specific models
+│   ├── utils/            # Utility functions
+│   └── config/           # Configuration management
+├── tests/                # Test suite
+│   ├── unit/             # Unit tests
+│   └── integration/      # Integration tests
+├── docs/                 # Documentation
+└── scripts/              # Utility scripts
+```
+
+## Installation
 
 ### Prerequisites
 
 - Docker and Docker Compose
-- 4GB+ RAM
-- 5GB+ free disk space
+- Git
 
-### Installation
+### Setup
 
-1. Clone the repository:
+1. Clone the repository with submodules:
    ```bash
-   git clone https://github.com/your-org/claryai-lite.git
+   git clone --recursive https://github.com/claryai/claryai-lite.git
    cd claryai-lite
    ```
 
-2. Initialize and update the submodule:
+2. Build and run with Docker Compose:
    ```bash
-   git submodule init
-   git submodule update
+   docker-compose up --build
    ```
 
-3. Create a `.env` file:
+3. Access the API at `http://localhost:8000`
+
+## Development
+
+1. Set up a virtual environment:
    ```bash
-   cp core/.env.example .env
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-4. Start the services:
+2. Install dependencies:
    ```bash
-   docker-compose up -d
+   pip install -r requirements.txt
    ```
 
-5. Access the application:
-   - Web UI: http://localhost:3000
-   - API: http://localhost:8000
-
-## Documentation
-
-For detailed documentation, see the [docs](core/docs/) directory, particularly:
-
-- [Architecture Overview](core/docs/architecture.md)
-- [API Documentation](core/docs/api.md)
-- [Deployment Guide](core/docs/deployment.md)
+3. Run tests:
+   ```bash
+   pytest
+   ```
 
 ## Upgrading to Higher Tiers
 
-Clary AI Lite can be upgraded to higher tiers (Standard or Professional) to access additional features:
+To upgrade to a higher tier:
 
-- **Clary AI Standard**: Adds advanced document extraction, table extraction, and pre-integrated Phi-4 Multimodal model
-- **Clary AI Professional**: Adds custom templates, Llama 3 8B model, and cloud LLM support
-
-See the [Upgrade Path](core/docs/upgrade_path.md) documentation for details on upgrading.
+1. Standard Tier: [Clary AI Standard](https://github.com/claryai/claryai-standard)
+2. Professional Tier: [Clary AI Professional](https://github.com/claryai/claryai-professional)
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This repository is licensed under the terms specified in the LICENSE file.
+
+## Contact
+
+For questions or support, please contact the Clary AI team.
